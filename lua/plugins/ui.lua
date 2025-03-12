@@ -89,31 +89,43 @@ return {
 	-- filename
 	{
 		"b0o/incline.nvim",
-		dependencies = { "craftzdog/solarized-osaka.nvim" },
-		event = "BufReadPre",
-		priority = 1200,
+		dependencies = {
+			"nvim-tree/nvim-web-devicons",
+			"lewis6991/gitsigns.nvim",
+		},
 		config = function()
-			local colors = require("solarized-osaka.colors").setup()
+			local colors = require("cyberdream.colors")
 			require("incline").setup({
-				highlight = {
-					groups = {
-						InclineNormal = { guibg = colors.magenta500, guifg = colors.base04 },
-						InclineNormalNC = { guifg = colors.violet500, guibg = colors.base03 },
+				window = {
+					padding = 0,
+					margin = { vertical = 0, horizontal = 1 },
+					winhighlight = {
+						Normal = "InclineNormal",
+						FloatBorder = "InclineBorder",
 					},
 				},
-				window = { margin = { vertical = 0, horizontal = 1 } },
+				render = function(props)
+					local bufname = vim.api.nvim_buf_get_name(props.buf)
+					local filename = vim.fn.fnamemodify(bufname, ":t")
+					local icon, color = require("nvim-web-devicons").get_icon_color(filename)
+					local modified = vim.bo[props.buf].modified and "[+] " or ""
+					local readonly = vim.bo[props.buf].readonly and " " or ""
+					local branch = git and git.head or ""
+
+					return {
+						{ icon, guifg = color },
+						{ " " },
+						{ modified, guifg = colors.yellow },
+						{ readonly, guifg = colors.red },
+						{ filename },
+						{ branch ~= "" and "  " .. branch or "", guifg = colors.purple },
+					}
+				end,
 				hide = {
 					cursorline = true,
+					focused_win = false,
+					only_win = false,
 				},
-				render = function(props)
-					local filename = vim.fn.fnamemodify(vim.api.nvim_buf_get_name(props.buf), ":t")
-					if vim.bo[props.buf].modified then
-						filename = "[+] " .. filename
-					end
-
-					local icon, color = require("nvim-web-devicons").get_icon_color(filename)
-					return { { icon, guifg = color }, { " " }, { filename } }
-				end,
 			})
 		end,
 	},
