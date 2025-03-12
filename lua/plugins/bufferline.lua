@@ -7,7 +7,7 @@ return {
 			"famiu/bufdelete.nvim",
 		},
 		config = function()
-			local colors = require("solarized-osaka.colors").setup({ transparent = true })
+			local colors = require("cyberdream.colors")
 
 			require("bufferline").setup({
 				options = {
@@ -71,7 +71,7 @@ return {
 			vim.keymap.set("n", "<leader>bd", "<Cmd>Bdelete!<CR>")
 
 			-- Close current buffer without closing window
-			vim.keymap.set("n", "<C-w>", "<Cmd>Bdelete!<CR>", { noremap = true, silent = true })
+			vim.keymap.set("n", "<leader>bc", "<Cmd>Bdelete!<CR>", { noremap = true, silent = true })
 		end,
 	},
 }

@@ -21,7 +21,7 @@ return {
 				hsl_color = {
 					pattern = "hsl%(%d+,? %d+%%?,? %d+%%?%)",
 					group = function(_, match)
-						local utils = require("solarized-osaka.hsl")
+						local utils = require("cyberdream.hsl")
 						--- @type string, string, string
 						local nh, ns, nl = match:match("hsl%((%d+),? (%d+)%%?,? (%d+)%%?%)")
 						--- @type number?, number?, number?
@@ -40,9 +40,7 @@ return {
 		event = "BufReadPre",
 		opts = {
 			keymaps = {
-				-- Open blame window
 				blame = "<Leader>gb",
-				-- Open file/folder in git repository
 				browse = "<Leader>go",
 			},
 		},
@@ -132,11 +130,9 @@ return {
 				"sf",
 				function()
 					local telescope = require("telescope")
-
 					local function telescope_buffer_dir()
 						return vim.fn.expand("%:p:h")
 					end
-
 					telescope.extensions.file_browser.file_browser({
 						path = "%:p:h",
 						cwd = telescope_buffer_dir(),
@@ -156,14 +152,41 @@ return {
 			local actions = require("telescope.actions")
 			local fb_actions = require("telescope").extensions.file_browser.actions
 
-			opts.defaults = vim.tbl_deep_extend("force", opts.defaults, {
-				-- Add this mappings section
+			-- Define cyberdream-inspired colors
+			local colors = {
+				bg = "#0a0a1a", -- Soft dark navy
+				fg = "#80ffdf", -- Pastel cyan-green
+				gray = "#606060", -- Medium gray
+				teal = "#66ffcc", -- Mint teal
+				purple = "#a066ff", -- Lavender
+				cyan = "#66ffff", -- Pale cyan
+				blue = "#66b3ff", -- Sky blue
+				selection = "#630af5", -- Visual selection
+				border = "#2a2a4a", -- Status line bg
+				prompt_bg = "#0a0a1a",
+			}
+
+			-- Set Telescope highlights
+			vim.api.nvim_set_hl(0, "TelescopeNormal", { bg = colors.bg, fg = colors.fg })
+			vim.api.nvim_set_hl(0, "TelescopeBorder", { bg = colors.bg, fg = colors.purple })
+			vim.api.nvim_set_hl(0, "TelescopePromptNormal", { bg = colors.prompt_bg, fg = colors.fg })
+			vim.api.nvim_set_hl(0, "TelescopePromptBorder", { bg = colors.prompt_bg, fg = colors.purple })
+			vim.api.nvim_set_hl(0, "TelescopePromptTitle", { bg = colors.prompt_bg, fg = colors.teal })
+			vim.api.nvim_set_hl(0, "TelescopePreviewNormal", { bg = colors.bg, fg = colors.fg })
+			vim.api.nvim_set_hl(0, "TelescopePreviewBorder", { bg = colors.bg, fg = colors.purple })
+			vim.api.nvim_set_hl(0, "TelescopePreviewTitle", { bg = colors.bg, fg = colors.cyan })
+			vim.api.nvim_set_hl(0, "TelescopeResultsNormal", { bg = colors.bg, fg = colors.fg })
+			vim.api.nvim_set_hl(0, "TelescopeResultsBorder", { bg = colors.bg, fg = colors.purple })
+			vim.api.nvim_set_hl(0, "TelescopeSelection", { bg = colors.selection, fg = colors.fg })
+			vim.api.nvim_set_hl(0, "TelescopeMatching", { fg = colors.blue })
+
+			opts.defaults = vim.tbl_deep_extend("force", opts.defaults or {}, {
 				mappings = {
 					i = {
-						["<C-j>"] = actions.move_selection_next, -- Next item
-						["<C-k>"] = actions.move_selection_previous, -- Previous item
-						["<C-h>"] = actions.preview_scrolling_left, -- Scroll preview left
-						["<C-l>"] = actions.preview_scrolling_right, -- Scroll preview right
+						["<C-j>"] = actions.move_selection_next,
+						["<C-k>"] = actions.move_selection_previous,
+						["<C-h>"] = actions.preview_scrolling_left,
+						["<C-l>"] = actions.preview_scrolling_right,
 					},
 					n = {
 						["<C-j>"] = actions.move_selection_next,
@@ -172,19 +195,13 @@ return {
 						["<C-l>"] = actions.preview_scrolling_right,
 					},
 				},
-				-- Rest of your existing defaults
-			})
-
-			opts.defaults = vim.tbl_deep_extend("force", opts.defaults, {
 				wrap_results = true,
 				layout_strategy = "horizontal",
 				layout_config = { prompt_position = "top" },
 				sorting_strategy = "ascending",
 				winblend = 0,
-				mappings = {
-					n = {},
-				},
 			})
+
 			opts.pickers = {
 				diagnostics = {
 					theme = "ivy",
@@ -194,15 +211,19 @@ return {
 					},
 				},
 			}
+
 			opts.extensions = {
 				file_browser = {
 					theme = "dropdown",
-					-- disables netrw and use telescope-file-browser in its place
 					hijack_netrw = true,
+					respect_gitignore = false,
+					hidden = true,
+					grouped = true,
+					previewer = false,
+					initial_mode = "normal",
+					layout_config = { height = 40 },
 					mappings = {
-						-- your custom insert mode mappings
 						["n"] = {
-							-- your custom normal mode mappings
 							["N"] = fb_actions.create,
 							["h"] = fb_actions.goto_parent_dir,
 							["/"] = function()
@@ -224,9 +245,28 @@ return {
 					},
 				},
 			}
+
 			telescope.setup(opts)
 			require("telescope").load_extension("fzf")
 			require("telescope").load_extension("file_browser")
+
+			-- Make the file browser the default when opening directories
+			vim.api.nvim_create_autocmd("VimEnter", {
+				callback = function()
+					local arg = vim.fn.expand("%:p")
+					if vim.fn.isdirectory(arg) ~= 0 then
+						require("telescope").extensions.file_browser.file_browser({
+							path = arg,
+							respect_gitignore = false,
+							hidden = true,
+							grouped = true,
+							previewer = false,
+							initial_mode = "normal",
+							layout_config = { height = 40 },
+						})
+					end
+				end,
+			})
 		end,
 	},
 
