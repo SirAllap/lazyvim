@@ -100,6 +100,11 @@ return {
 			vim.keymap.set("n", "<leader>co", function()
 				require("copilot.panel").open()
 			end, { desc = "Open Copilot Panel" })
+
+			-- Copilot chat
+			vim.keymap.set("n", "<C-S-i>", function()
+				require("CopilotChat").toggle()
+			end, { desc = "Toggle Copilot Chat" })
 		end,
 	},
 }
