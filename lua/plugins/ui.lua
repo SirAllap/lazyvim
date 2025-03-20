@@ -94,7 +94,12 @@ return {
 			"lewis6991/gitsigns.nvim",
 		},
 		config = function()
-			local colors = require("cyberdream.colors")
+			local catppuccin = require("catppuccin.palettes").get_palette()
+
+			-- Set custom highlight groups using Catppuccin colors
+			vim.api.nvim_set_hl(0, "InclineNormal", { fg = catppuccin.text, bg = catppuccin.base })
+			vim.api.nvim_set_hl(0, "InclineBorder", { fg = catppuccin.mauve, bg = catppuccin.base })
+
 			require("incline").setup({
 				window = {
 					padding = 0,
@@ -115,10 +120,10 @@ return {
 					return {
 						{ icon, guifg = color },
 						{ " " },
-						{ modified, guifg = colors.yellow },
-						{ readonly, guifg = colors.red },
-						{ filename },
-						{ branch ~= "" and "  " .. branch or "", guifg = colors.purple },
+						{ modified, guifg = catppuccin.peach }, -- Use peach for modified indicator
+						{ readonly, guifg = catppuccin.red }, -- Use red for readonly
+						{ filename, guifg = catppuccin.text }, -- Main text color
+						{ branch ~= "" and "  " .. branch or "", guifg = catppuccin.mauve }, -- Use mauve for git branch
 					}
 				end,
 				hide = {
@@ -137,48 +142,36 @@ return {
 		opts = function(_, opts)
 			local LazyVim = require("lazyvim.util")
 
-			-- Define colors from your cyberdream colorscheme
-			local colors = {
-				bg = "#0a0a1a", -- Soft dark navy (main bg)
-				fg = "#80ffdf", -- Pastel cyan-green
-				status_bg = "#2a2a4a", -- Status line bg (matches StatusLine)
-				cyan = "#66ffff", -- Pale cyan
-				teal = "#66ffcc", -- Mint teal
-				purple = "#a066ff", -- Lavender
-				blue = "#66b3ff", -- Sky blue
-				yellow = "#ffd966", -- Gold yellow
-				gray = "#606060", -- Medium gray
-				selection = "#3a3a5a", -- Visual selection (matches Telescope)
-				prompt_bg = "#1a2a3a", -- Matches Telescope prompt
-			}
+			-- Get Catppuccin colors
+			local catppuccin = require("catppuccin.palettes").get_palette()
 
-			-- Custom theme for lualine
+			-- Custom theme using Catppuccin colors
 			local custom_theme = {
 				normal = {
-					a = { fg = colors.cyan, bg = colors.status_bg, gui = "bold" },
-					b = { fg = colors.fg, bg = colors.status_bg },
-					c = { fg = colors.gray, bg = colors.bg },
+					a = { fg = catppuccin.sky, bg = catppuccin.mantle, gui = "bold" },
+					b = { fg = catppuccin.text, bg = catppuccin.mantle },
+					c = { fg = catppuccin.overlay1, bg = catppuccin.base },
 				},
 				insert = {
-					a = { fg = colors.teal, bg = colors.status_bg, gui = "bold" },
-					b = { fg = colors.fg, bg = colors.status_bg },
+					a = { fg = catppuccin.green, bg = catppuccin.mantle, gui = "bold" },
+					b = { fg = catppuccin.text, bg = catppuccin.mantle },
 				},
 				visual = {
-					a = { fg = colors.purple, bg = colors.status_bg, gui = "bold" },
-					b = { fg = colors.fg, bg = colors.status_bg },
+					a = { fg = catppuccin.mauve, bg = catppuccin.mantle, gui = "bold" },
+					b = { fg = catppuccin.text, bg = catppuccin.mantle },
 				},
 				replace = {
-					a = { fg = colors.blue, bg = colors.status_bg, gui = "bold" },
-					b = { fg = colors.fg, bg = colors.status_bg },
+					a = { fg = catppuccin.red, bg = catppuccin.mantle, gui = "bold" },
+					b = { fg = catppuccin.text, bg = catppuccin.mantle },
 				},
 				command = {
-					a = { fg = colors.yellow, bg = colors.status_bg, gui = "bold" },
-					b = { fg = colors.fg, bg = colors.status_bg },
+					a = { fg = catppuccin.peach, bg = catppuccin.mantle, gui = "bold" },
+					b = { fg = catppuccin.text, bg = catppuccin.mantle },
 				},
 				inactive = {
-					a = { fg = colors.gray, bg = colors.bg },
-					b = { fg = colors.gray, bg = colors.bg },
-					c = { fg = colors.gray, bg = colors.bg },
+					a = { fg = catppuccin.overlay1, bg = catppuccin.base },
+					b = { fg = catppuccin.overlay1, bg = catppuccin.base },
+					c = { fg = catppuccin.overlay1, bg = catppuccin.base },
 				},
 			}
 

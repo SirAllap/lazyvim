@@ -54,7 +54,7 @@ return {
 				auto_trigger = true, -- Automatically show suggestions as you type
 				debounce = 75, -- Delay in milliseconds before showing suggestions
 				keymap = {
-					accept = "<M-a>", -- Accept suggestion with Alt+a
+					accept = "<C-l>", -- Accept suggestion with Ctrl+l
 					accept_word = "<M-w>", -- Accept a single word with Alt+w
 					accept_line = "<M-l>", -- Accept the entire line with Alt+l
 					next = "<M-]>", -- Cycle to the next suggestion with Alt+]

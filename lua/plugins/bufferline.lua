@@ -7,7 +7,7 @@ return {
 			"famiu/bufdelete.nvim",
 		},
 		config = function()
-			local colors = require("cyberdream.colors")
+			local catppuccin = require("catppuccin.palettes").get_palette()
 
 			require("bufferline").setup({
 				options = {
@@ -33,34 +33,34 @@ return {
 				},
 				highlights = {
 					fill = { bg = "NONE" },
-					background = { bg = "NONE", fg = colors.base01 },
+					background = { bg = "NONE", fg = catppuccin.overlay1 },
 
 					buffer_selected = {
 						bg = "NONE",
-						fg = colors.yellow,
+						fg = catppuccin.text,
 						bold = true,
 						italic = false,
 					},
-					buffer_visible = { bg = "NONE", fg = colors.base00 },
+					buffer_visible = { bg = "NONE", fg = catppuccin.overlay0 },
 
-					modified = { fg = colors.magenta, bg = "NONE" },
-					modified_selected = { fg = colors.magenta, bg = "NONE", bold = true },
+					modified = { fg = catppuccin.mauve, bg = "NONE" },
+					modified_selected = { fg = catppuccin.mauve, bg = "NONE", bold = true },
 
-					indicator_selected = { fg = colors.blue, bg = "NONE" },
+					indicator_selected = { fg = catppuccin.blue, bg = "NONE" },
 
-					separator = { fg = colors.base02, bg = "NONE" },
-					separator_selected = { fg = colors.base02, bg = "NONE" },
-					separator_visible = { fg = colors.base02, bg = "NONE" },
+					separator = { fg = catppuccin.surface1, bg = "NONE" },
+					separator_selected = { fg = catppuccin.surface1, bg = "NONE" },
+					separator_visible = { fg = catppuccin.surface1, bg = "NONE" },
 
-					error = { fg = colors.red, bg = "NONE" },
-					error_diagnostic = { fg = colors.red, bg = "NONE" },
-					warning = { fg = colors.orange, bg = "NONE" },
-					warning_diagnostic = { fg = colors.orange, bg = "NONE" },
-					info_diagnostic = { fg = colors.blue, bg = "NONE" },
-					hint_diagnostic = { fg = colors.cyan, bg = "NONE" },
+					error = { fg = catppuccin.red, bg = "NONE" },
+					error_diagnostic = { fg = catppuccin.red, bg = "NONE" },
+					warning = { fg = catppuccin.peach, bg = "NONE" },
+					warning_diagnostic = { fg = catppuccin.peach, bg = "NONE" },
+					info_diagnostic = { fg = catppuccin.blue, bg = "NONE" },
+					hint_diagnostic = { fg = catppuccin.sky, bg = "NONE" },
 
-					duplicate = { bg = "NONE", fg = colors.base01 },
-					duplicate_selected = { bg = "NONE", fg = colors.base01 },
+					duplicate = { bg = "NONE", fg = catppuccin.overlay1 },
+					duplicate_selected = { bg = "NONE", fg = catppuccin.overlay1 },
 				},
 			})
 			-- Key mappings
