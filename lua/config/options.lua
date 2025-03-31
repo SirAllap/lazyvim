@@ -20,10 +20,13 @@ vim.opt.backupskip = { "/tmp/*", "/private/tmp/*" }
 vim.opt.inccommand = "split"
 vim.opt.ignorecase = true -- Case insensitive searching UNLESS /C or capital in search
 vim.opt.smarttab = true
-vim.opt.breakindent = true
 vim.opt.shiftwidth = 2
 vim.opt.tabstop = 2
-vim.opt.wrap = false -- No Wrap lines
+vim.opt.wrap = true -- Enable line wrapping
+vim.opt.linebreak = true -- Wrap lines at convenient points
+vim.opt.breakindent = true
+vim.opt.showbreak = "↪ "
+vim.opt.whichwrap = "b,s,<,>,[,]"
 vim.opt.backspace = { "start", "eol", "indent" }
 vim.opt.path:append({ "**" }) -- Finding files - Search down into subfolders
 vim.opt.wildignore:append({ "*/node_modules/*" })
