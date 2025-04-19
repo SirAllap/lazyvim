@@ -26,7 +26,9 @@ keymap.set("n", "<C-k>", "<C-w>k", { desc = "Go to upper window" })
 keymap.set("n", "<C-l>", "<C-w>l", { desc = "Go to right window" })
 
 -- Lazydocker
-keymap.set("n", "<Leader>k", ":LazyDocker<CR>", { desc = "Open LazyDocker" })
+keymap.set("n", "<Leader>k", function()
+	require("lazydocker").toggle()
+end, { desc = "Open LazyDocker" })
 
 -- Increment/decrement
 keymap.set("n", "+", "<C-a>")
