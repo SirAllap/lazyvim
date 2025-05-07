@@ -5,32 +5,47 @@ return {
 		local neoscroll = require("neoscroll")
 
 		neoscroll.setup({
-			-- Basic config
-			hide_cursor = true, -- Hide cursor while scrolling
-			stop_eof = true, -- Stop at EOF when scrolling down
-			respect_scrolloff = true, -- Use scrolloff margin
-			cursor_scrolls_alone = true, -- Allow cursor to move independently
-
-			-- Predefined easing functions: "linear", "quadratic", "cubic", "quartic", "quintic", "circular", "sine"
+			hide_cursor = true,
+			stop_eof = true,
+			respect_scrolloff = true,
+			cursor_scrolls_alone = true,
 			easing_function = "quadratic",
+			mappings = {}, -- Disable default mappings
 		})
 
-		local t = {}
-		-- Scroll <C-d> and <C-u> by half a page, and <C-f>/<C-b> by full pages
-		t["<C-u>"] = { "scroll", { "-vim.wo.scroll", "true", "120" } }
-		t["<C-d>"] = { "scroll", { "vim.wo.scroll", "true", "120" } }
-		t["<C-b>"] = { "scroll", { "-vim.api.nvim_win_get_height(0)", "true", "150" } }
-		t["<C-f>"] = { "scroll", { "vim.api.nvim_win_get_height(0)", "true", "150" } }
+		local keymap = {
+			["<C-u>"] = function()
+				neoscroll.ctrl_u({ duration = 250 })
+			end,
+			["<C-d>"] = function()
+				neoscroll.ctrl_d({ duration = 250 })
+			end,
+			["<C-b>"] = function()
+				neoscroll.ctrl_b({ duration = 450 })
+			end,
+			["<C-f>"] = function()
+				neoscroll.ctrl_f({ duration = 450 })
+			end,
+			["<C-y>"] = function()
+				neoscroll.scroll(-0.10, { move_cursor = false, duration = 100 })
+			end,
+			["<C-e>"] = function()
+				neoscroll.scroll(0.10, { move_cursor = false, duration = 100 })
+			end,
+			["zz"] = function()
+				neoscroll.zz({ duration = 250 })
+			end,
+			["zt"] = function()
+				neoscroll.zt({ duration = 250 })
+			end,
+			["zb"] = function()
+				neoscroll.zb({ duration = 250 })
+			end,
+		}
 
-		-- Scroll one line up/down
-		t["<C-y>"] = { "scroll", { "-0.10", "false", "80" } }
-		t["<C-e>"] = { "scroll", { "0.10", "false", "80" } }
-
-		-- Recenter screen with smooth scroll
-		t["zz"] = { "zt", { "150" } }
-		t["zt"] = { "zt", { "150" } }
-		t["zb"] = { "zb", { "150" } }
-
-		require("neoscroll.config").set_mappings(t)
+		local modes = { "n", "v", "x" }
+		for key, func in pairs(keymap) do
+			vim.keymap.set(modes, key, func, { silent = true })
+		end
 	end,
 }
