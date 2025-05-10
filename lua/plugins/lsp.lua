@@ -175,4 +175,10 @@ return {
 			})
 		end,
 	},
+	{
+		"williamboman/mason-lspconfig.nvim",
+		opts = {
+			automatic_installation = false,
+		},
+	},
 }
