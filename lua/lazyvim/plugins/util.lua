@@ -14,7 +14,7 @@ return {
   {
     "snacks.nvim",
     opts = {
-      bigfile = { enabled = true },
+      bigfile = { enabled = false },
       quickfile = { enabled = true },
       terminal = {
         win = {
